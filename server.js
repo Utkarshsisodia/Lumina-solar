@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const puppeteer = require('puppeteer');
+
 const path = require('path');
 const fs = require('fs');
 
@@ -45,7 +45,9 @@ app.post('/generate-quote', async (req, res) => {
             .replace('{{co2PerYear}}', co2PerYear.toFixed(1))
             .replace('{{date}}', new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
 
-        // Launch Puppeteer
+        // Launch Puppeteer dynamically (since Puppeteer is now an ES Module)
+        const puppeteer = (await import('puppeteer')).default;
+
         browser = await puppeteer.launch({ 
             headless: 'new',
             executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
