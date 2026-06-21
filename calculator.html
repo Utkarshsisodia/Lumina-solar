@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Calculator | Lumina Solar</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lumina: {
+                            bg: '#F3F8F2',
+                            dark: '#0A2619',
+                            light: '#4A6B58',
+                            green: '#90D955',
+                            hover: '#7BC440',
+                            yellow: '#FBE58A',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'],
+                        heading: ['Nunito', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Bootstrap CSS for Forms -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #F3F8F2;
+            color: #0A2619;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #FBE58A 0%, rgba(251, 229, 138, 0) 70%);
+            border-radius: 50%;
+            top: -150px;
+            right: -100px;
+            opacity: 0.5;
+            z-index: -1;
+            filter: blur(60px);
+            animation: pulseGlow 8s infinite alternate;
+        }
+
+        .ambient-glow.green {
+            background: radial-gradient(circle, #90D955 0%, rgba(144, 217, 85, 0) 70%);
+            top: 40%;
+            left: -200px;
+            width: 500px;
+            height: 500px;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
+            100% { transform: scale(1.1) translate(-20px, 20px); opacity: 0.6; }
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 15px 35px rgba(10, 38, 25, 0.05);
+        }
+
+        /* Bootstrap Form Overrides for Aesthetics */
+        .form-control, .form-select {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(10, 38, 25, 0.1);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            font-family: 'Quicksand', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #fff;
+            border-color: #90D955;
+            box-shadow: 0 0 0 4px rgba(144, 217, 85, 0.2);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #0A2619;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group-text {
+            background-color: rgba(144, 217, 85, 0.2);
+            border: 1px solid rgba(10, 38, 25, 0.1);
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+            color: #0A2619;
+            font-weight: 600;
+        }
+
+        .form-control.with-addon {
+            border-radius: 0 12px 12px 0;
+            border-left: none;
+        }
+
+        .btn-calculate {
+            background-color: #0A2619;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            border: none;
+            width: 100%;
+        }
+
+        .btn-calculate:hover {
+            background-color: #90D955;
+            color: #0A2619;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(144, 217, 85, 0.3);
+        }
+
+        /* Nav styles to match main page */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 5%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #0A2619;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: #90D955;
+            border-radius: 50%;
+            position: relative;
+        }
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: #FBE58A;
+            border-radius: 50%;
+        }
+
+        #results {
+            display: none;
+            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .savings-number {
+            font-family: 'Nunito', sans-serif;
+            color: #90D955;
+            text-shadow: 0 4px 10px rgba(144, 217, 85, 0.2);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col">
+
+    <div class="ambient-glow"></div>
+    <div class="ambient-glow green"></div>
+
+    <nav>
+        <a href="solar-landing.html" class="logo">
+            <div class="logo-icon"></div>
+            Lumina
+        </a>
+        <a href="solar-landing.html" class="text-lumina-dark font-medium hover:text-lumina-green transition-colors text-decoration-none">
+            ← Back to Home
+        </a>
+    </nav>
+
+    <main class="flex-grow flex items-center justify-center p-4 z-10">
+        <div class="w-full max-w-4xl grid md:grid-cols-5 gap-8">
+            
+            <!-- Left Info Section -->
+            <div class="md:col-span-2 flex flex-col justify-center">
+                <div class="inline-block px-4 py-2 bg-lumina-green/20 text-lumina-dark border border-lumina-green/40 rounded-full font-semibold text-sm w-max mb-6">
+                    Solar Calculator
+                </div>
+                <h1 class="text-4xl md:text-5xl font-heading font-extrabold text-lumina-dark mb-4 leading-tight tracking-tight">
+                    See your future <span class="relative inline-block text-lumina-green z-10">savings.<span class="absolute bottom-1 left-0 w-full h-3 bg-lumina-yellow -z-10 opacity-60 rounded-md"></span></span>
+                </h1>
+                <p class="text-lumina-light text-lg mb-8">
+                    Discover how much you could save by switching to clean, renewable solar energy. It takes less than a minute.
+                </p>
+                
+                <div class="hidden md:flex items-center gap-4 p-4 rounded-2xl bg-white/40 border border-white/50 shadow-sm backdrop-blur-md">
+                    <div class="w-12 h-12 rounded-xl bg-lumina-green flex items-center justify-center text-lumina-dark">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lumina-dark m-0">Zero Down</h4>
+                        <p class="text-sm text-lumina-light m-0">Available for qualified homes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Calculator Form -->
+            <div class="md:col-span-3">
+                <div class="glass-panel rounded-[32px] p-8 md:p-10">
+                    <form id="calculatorForm" onsubmit="calculateSavings(event)">
+                        
+                        <div class="mb-4">
+                            <label for="monthlyBill" class="form-label">Average Monthly Electric Bill</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control with-addon" id="monthlyBill" placeholder="150" required min="50">
+                            </div>
+                            <div class="form-text mt-2 text-lumina-light">A rough estimate is perfectly fine.</div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-4 mb-md-0">
+                                <label for="zipCode" class="form-label">Zip Code</label>
+                                <input type="text" class="form-control" id="zipCode" placeholder="Enter zip code" required pattern="[0-9]{5}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="roofType" class="form-label">Roof Shading</label>
+                                <select class="form-select" id="roofType">
+                                    <option value="none">No shade (Full Sun)</option>
+                                    <option value="partial">Partial shade</option>
+                                    <option value="full">A lot of shade</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="form-label d-block mb-3">Does your roof need replacing soon?</label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check flex-grow-1 p-0">
+                                    <input type="radio" class="btn-check" name="roofStatus" id="roofNo" autocomplete="off" checked>
+                                    <label class="btn btn-outline-dark w-100 rounded-xl py-2" for="roofNo">No, it's good</label>
+                                </div>
+                                <div class="form-check flex-grow-1 p-0">
+                                    <input type="radio" class="btn-check" name="roofStatus" id="roofYes" autocomplete="off">
+                                    <label class="btn btn-outline-dark w-100 rounded-xl py-2" for="roofYes">Yes, within 5 yrs</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-calculate" id="submitBtn">
+                            Calculate My Savings
+                        </button>
+                    </form>
+
+                    <!-- Results Section -->
+                    <div id="results" class="mt-4 pt-6 border-t border-black/10">
+                        <div class="text-center mb-6">
+                            <p class="text-lumina-light font-medium mb-1">Your Estimated 20-Year Savings</p>
+                            <h2 class="text-5xl font-extrabold savings-number" id="savingsAmount">$0</h2>
+                        </div>
+                        
+                        <div class="bg-white/50 rounded-2xl p-4 mb-6 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <p class="text-xs text-lumina-light uppercase tracking-wider font-bold mb-1">New Est. Bill</p>
+                                <p class="text-xl font-bold text-lumina-dark" id="newBill">$0</p>
+                            </div>
+                            <div class="text-center border-l border-black/10">
+                                <p class="text-xs text-lumina-light uppercase tracking-wider font-bold mb-1">CO2 Offset</p>
+                                <p class="text-xl font-bold text-lumina-dark">~<span id="co2Offset">0</span> Tons</p>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-dark w-100 rounded-pill py-3 fw-bold" style="background-color: #0A2619; border: none;" id="getQuoteBtn" onclick="generateQuote()">
+                            Get a Formal Quote
+                        </button>
+                        <p class="text-center text-xs text-lumina-light mt-3">
+                            *Estimates based on national averages. Actual savings will vary based on exact location and usage.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentQuoteData = null;
+
+        function calculateSavings(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerText;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Calculating...';
+            btn.disabled = true;
+
+            // Simulate calculation delay for effect
+            setTimeout(() => {
+                const monthlyBill = parseFloat(document.getElementById('monthlyBill').value) || 0;
+                const roofShade = document.getElementById('roofType').value;
+                
+                // Super simple mockup logic
+                let savingsMultiplier = 0.8; // Default 80% savings on bill
+                if (roofShade === 'partial') savingsMultiplier = 0.6;
+                if (roofShade === 'full') savingsMultiplier = 0.3;
+
+                const annualBill = monthlyBill * 12;
+                const estAnnualSavings = annualBill * savingsMultiplier;
+                const twentyYearSavings = estAnnualSavings * 20 * 1.03; // Adding a rough 3% annual energy cost inflation
+
+                const newMonthlyBill = monthlyBill - (monthlyBill * savingsMultiplier);
+                const co2PerYear = (annualBill / 150) * 1.5; // Made up metric for presentation
+
+                currentQuoteData = {
+                    monthlyBill,
+                    roofShade,
+                    twentyYearSavings,
+                    newMonthlyBill,
+                    co2PerYear
+                };
+
+                // Format numbers
+                const formatter = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    maximumFractionDigits: 0
+                });
+
+                // Animate numbers
+                animateValue("savingsAmount", 0, twentyYearSavings, 1500, formatter);
+                document.getElementById('newBill').innerText = formatter.format(newMonthlyBill);
+                document.getElementById('co2Offset').innerText = (co2PerYear * 20).toFixed(1);
+
+                // Show results
+                document.getElementById('calculatorForm').style.display = 'none';
+                document.getElementById('results').style.display = 'block';
+
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 800);
+        }
+
+        // Animate counting up
+        function animateValue(id, start, end, duration, formatter) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                // Ease out cubic
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(easeOut * (end - start) + start);
+                document.getElementById(id).innerText = formatter.format(current);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        async function generateQuote() {
+            if (!currentQuoteData) return;
+
+            const btn = document.getElementById('getQuoteBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Generating PDF...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('http://localhost:3000/generate-quote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(currentQuoteData)
+                });
+
+                if (!response.ok) throw new Error('Failed to generate quote');
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                window.open(url, '_blank');
+                
+            } catch (error) {
+                console.error(error);
+                alert('There was an error generating your quote. Please try again.');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

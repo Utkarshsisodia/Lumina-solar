@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Quote - Lumina Solar</title>
+    <style>
+        @page {
+            margin: 1in;
+        }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            color: black;
+            background-color: white;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            font-size: 12pt;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        h1, h2, h3, h4 {
+            font-family: Arial, Helvetica, sans-serif;
+            color: black;
+            margin-top: 18pt;
+            margin-bottom: 10pt;
+        }
+        h1 { 
+            font-size: 24pt; 
+            border-bottom: 2px solid black; 
+            padding-bottom: 5pt; 
+            margin-top: 0;
+        }
+        h2 { font-size: 18pt; }
+        h3 { font-size: 14pt; }
+        
+        .header-table {
+            width: 100%;
+            margin-bottom: 30pt;
+            border: none;
+        }
+        .header-table td {
+            vertical-align: top;
+            border: none;
+            padding: 0;
+        }
+        .text-right { text-align: right; }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20pt;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 11pt;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid black;
+            padding: 8pt;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+        
+        .highlight-box {
+            border: 2px solid black;
+            padding: 20pt;
+            text-align: center;
+            margin: 30pt 0;
+            background-color: #f9f9f9;
+        }
+        .highlight-box p.subtitle {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            margin: 0;
+            text-transform: uppercase;
+            font-size: 10pt;
+        }
+        .highlight-box h2 {
+            font-size: 48pt;
+            margin: 10pt 0;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        ul, ol {
+            margin-top: 5pt;
+            margin-bottom: 15pt;
+            padding-left: 25pt;
+        }
+        li {
+            margin-bottom: 5pt;
+        }
+        
+        .footer {
+            margin-top: 50pt;
+            border-top: 1px solid black;
+            padding-top: 10pt;
+            font-size: 9pt;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <table class="header-table">
+        <tr>
+            <td>
+                <h1>Lumina Solar Inc.</h1>
+                <p style="margin: 0;">123 Energy Way, Suite 100</p>
+                <p style="margin: 0;">Austin, TX 78701</p>
+                <p style="margin: 0;">hello@luminasolar.example.com</p>
+            </td>
+            <td class="text-right">
+                <h2 style="margin-top: 0;">FORMAL QUOTE</h2>
+                <p style="margin: 0;"><strong>Date:</strong> {{date}}</p>
+                <p style="margin: 0;"><strong>Valid for:</strong> 30 days</p>
+            </td>
+        </tr>
+    </table>
+
+    <h3>1. Usage & Cost Analysis</h3>
+    <table class="data-table">
+        <tr>
+            <th style="width: 50%;">Current Metrics</th>
+            <th style="width: 50%;">Projected Metrics (Post-Install)</th>
+        </tr>
+        <tr>
+            <td>
+                <strong>Estimated Monthly Bill:</strong> {{monthlyBill}}<br>
+                <strong>Roof Shading Profile:</strong> {{roofShade}}
+            </td>
+            <td>
+                <strong>New Estimated Monthly Bill:</strong> {{newMonthlyBill}}<br>
+                <strong>Monthly Reduction:</strong> Standard Solar Allocation
+            </td>
+        </tr>
+    </table>
+
+    <div class="highlight-box">
+        <p class="subtitle">20-Year Estimated Financial Savings</p>
+        <h2>{{twentyYearSavings}}</h2>
+        <p style="margin: 0; font-size: 11pt;"><em>Based on current consumption, expected energy inflation, and projected lifecycle generation.</em></p>
+    </div>
+
+    <h3>2. Environmental Impact</h3>
+    <p>By transitioning to Lumina Solar, you are actively reducing your carbon footprint. Based on your current usage statistics, your estimated contribution is:</p>
+    <ul>
+        <li><strong>CO2 Offset:</strong> Approximately {{co2PerYear}} Tons per year.</li>
+    </ul>
+
+    <h3>3. Next Steps to Proceed</h3>
+    <ol>
+        <li><strong>Schedule Consultation:</strong> A representative will contact you to review this estimate.</li>
+        <li><strong>Site Survey:</strong> We will dispatch a drone technician to map your roof and finalize structural designs.</li>
+        <li><strong>Installation & Permitting:</strong> Lumina Solar handles all local permitting, and standard installations are completed within one business day.</li>
+    </ol>
+
+    <div class="footer">
+        <p style="margin: 0; font-weight: bold;">Lumina Solar Inc. | www.luminasolar.example.com | 1-800-555-0199</p>
+        <p style="margin: 0;">Notice: This document is an estimate based on provided averages and satellite data. A formal contract and finalized pricing require an on-site evaluation.</p>
+    </div>
+
+</body>
+</html>

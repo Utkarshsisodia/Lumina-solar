@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: lumina-solar-app
+    env: docker
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production

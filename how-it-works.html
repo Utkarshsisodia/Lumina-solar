@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works | Lumina Solar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #F3F8F2;
+            --text-dark: #0A2619;
+            --text-light: #4A6B58;
+            --accent-green: #90D955;
+            --accent-hover: #7BC440;
+            --accent-yellow: #FBE58A;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --shadow: 0 8px 32px rgba(10, 38, 25, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, .logo {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* Ambient glowing background */
+        .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-green) 0%, rgba(144, 217, 85, 0) 70%);
+            border-radius: 50%;
+            top: -200px;
+            left: -100px;
+            opacity: 0.3;
+            z-index: -1;
+            filter: blur(60px);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 5%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background: var(--accent-yellow);
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 1.05rem;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-green);
+        }
+
+        .btn {
+            background-color: var(--text-dark);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            border: none;
+            cursor: pointer;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.05rem;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-green);
+            color: var(--text-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(144, 217, 85, 0.3);
+        }
+
+        /* Hero */
+        .page-hero {
+            padding: 6rem 5% 4rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-hero h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1.5px;
+        }
+
+        .page-hero p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+        }
+
+        /* Science Section */
+        .science-section {
+            padding: 6rem 5%;
+            background: white;
+            border-top-left-radius: 60px;
+            border-top-right-radius: 60px;
+        }
+
+        .science-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .science-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .science-content p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .system-diagram {
+            background: var(--bg-color);
+            border-radius: 30px;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .diagram-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .diagram-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--accent-green);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+        }
+
+        .step-text h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-text p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Detailed Process */
+        .detailed-process {
+            padding: 8rem 5%;
+            background: var(--bg-color);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-title h2 {
+            font-size: 3rem;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+        }
+
+        .process-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .p-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            border-top: 6px solid var(--accent-green);
+            transition: transform 0.3s ease;
+        }
+
+        .p-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(10, 38, 25, 0.05);
+        }
+
+        .p-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .p-number {
+            background: rgba(144, 217, 85, 0.2);
+            color: var(--text-dark);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 1rem;
+        }
+
+        .p-card ul {
+            list-style: none;
+            color: var(--text-light);
+        }
+
+        .p-card ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .p-card ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: rgba(255,255,255,0.7);
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            color: white;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-green);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 1024px) {
+            .science-grid { grid-template-columns: 1fr; }
+            .process-cards { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-hero h1 { font-size: 3rem; }
+            .footer-content, .footer-bottom { flex-direction: column; gap: 2rem; text-align: center; }
+        }
+        /* Scroll Progress Bar */
+        .scroll-progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 4px;
+            background: rgba(144, 217, 85, 0.1);
+            z-index: 9999;
+        }
+        .scroll-progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--accent-green);
+            border-radius: 0 4px 4px 0;
+            box-shadow: 0 0 10px rgba(144, 217, 85, 0.5);
+        }
+        /* Cursor Follower */
+        .cursor-follower {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(144, 217, 85, 0.15) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s;
+            mix-blend-mode: multiply;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar"></div>
+    </div>
+    <div class="cursor-follower" id="cursor"></div>
+    <div class="ambient-glow"></div>
+
+    <nav>
+        <a href="solar-landing.html" class="logo">
+            <div class="logo-icon"></div>
+            Lumina
+        </a>
+        <div class="nav-links">
+            <a href="how-it-works.html" style="color: var(--accent-green);">How it works</a>
+            <a href="benefits.html">Benefits</a>
+            <a href="solar-landing.html#sustainability">Sustainability</a>
+        </div>
+        <a href="solar-landing.html#quote" class="btn">Get Estimate</a>
+    </nav>
+
+    <div class="page-hero">
+        <h1>The science of savings.</h1>
+        <p>Understanding how sunlight becomes reliable, clean electricity for your home doesn't require a degree in engineering. Here is how your system works.</p>
+    </div>
+
+    <section class="science-section">
+        <div class="science-grid">
+            <div class="science-content">
+                <h2>Sunlight to Power.</h2>
+                <p>Every component in our system is designed to maximize efficiency and integrate seamlessly into your home's existing electrical infrastructure.</p>
+                <p>When sunlight hits the monocrystalline silicon cells in your panels, it knocks electrons loose, creating a flow of direct current (DC) electricity. This clean energy is instantly converted and routed to where your home needs it most.</p>
+            </div>
+            
+            <div class="system-diagram">
+                <div class="diagram-step">
+                    <div class="step-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path><circle cx="12" cy="12" r="4"></circle></svg>
+                    </div>
+                    <div class="step-text">
+                        <h4>1. Solar Panels (DC Power)</h4>
+                        <p>High-efficiency roof panels absorb photons and generate Direct Current electrical power.</p>
+                    </div>
+                </div>
+                
+                <div class="diagram-step">
+                    <div class="step-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>
+                    </div>
+                    <div class="step-text">
+                        <h4>2. Smart Inverter</h4>
+                        <p>Converts the raw DC power into safe, usable Alternating Current (AC) for your home's appliances.</p>
+                    </div>
+                </div>
+
+                <div class="diagram-step">
+                    <div class="step-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </div>
+                    <div class="step-text">
+                        <h4>3. Home Electrical Panel</h4>
+                        <p>The AC power flows into your breaker box, powering your lights, AC, and devices first.</p>
+                    </div>
+                </div>
+
+                <div class="diagram-step">
+                    <div class="step-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"></path><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2v0a2 2 0 0 0 2-2v0c0-1.1.9-2 2-2h3.17"></path><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                    </div>
+                    <div class="step-text">
+                        <h4>4. Net Metering</h4>
+                        <p>Any excess energy your home doesn't use is sent back to the grid, earning you credits from your utility.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="detailed-process">
+        <div class="section-title">
+            <h2>The path to independence.</h2>
+        </div>
+        <div class="process-cards">
+            <div class="p-card">
+                <h3><span class="p-number">1</span> Custom Design</h3>
+                <ul>
+                    <li>Satellite roof analysis</li>
+                    <li>Energy usage audit</li>
+                    <li>Shade profiling</li>
+                    <li>3D system modeling</li>
+                    <li>ROI and savings estimate</li>
+                </ul>
+            </div>
+            <div class="p-card">
+                <h3><span class="p-number">2</span> Permitting</h3>
+                <ul>
+                    <li>HOA approval processing</li>
+                    <li>Local city/county permits</li>
+                    <li>Utility interconnection agreements</li>
+                    <li>Structural engineering review</li>
+                    <li>Incentive & rebate filing</li>
+                </ul>
+            </div>
+            <div class="p-card">
+                <h3><span class="p-number">3</span> Installation</h3>
+                <ul>
+                    <li>1-2 day non-invasive install</li>
+                    <li>Concealed conduit routing</li>
+                    <li>City and utility inspections</li>
+                    <li>System activation</li>
+                    <li>App setup & monitoring tutorial</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <a href="solar-landing.html" class="logo footer-logo">
+                <div class="logo-icon"></div>
+                Lumina
+            </a>
+            <div class="footer-links">
+                <a href="how-it-works.html">Process</a>
+                <a href="benefits.html">Technology</a>
+                <a href="#">Careers</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Lumina Solar Inc. All rights reserved.</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none;">Privacy Policy</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none;">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        // Lenis Smooth Scroll Setup
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+        });
+
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+        // Soft glowing cursor follower
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0;
+        let mouseY = 0;
+        let cursorX = 0;
+        let cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animate() {
+            let distX = mouseX - cursorX;
+            let distY = mouseY - cursorY;
+            
+            cursorX = cursorX + (distX * 0.05);
+            cursorY = cursorY + (distY * 0.05);
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        const interactables = document.querySelectorAll('a, button, .p-card');
+        interactables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.width = '150px';
+                cursor.style.height = '150px';
+                cursor.style.background = 'radial-gradient(circle, rgba(144, 217, 85, 0.3) 0%, rgba(255,255,255,0) 70%)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.width = '300px';
+                cursor.style.height = '300px';
+                cursor.style.background = 'radial-gradient(circle, rgba(144, 217, 85, 0.15) 0%, rgba(255,255,255,0) 70%)';
+            });
+        });
+
+        // --- GSAP ScrollTrigger Animations ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Scroll Progress Line
+        gsap.to(".scroll-progress-bar", {
+            width: "100%",
+            ease: "none",
+            scrollTrigger: {
+                trigger: document.body,
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 0.2
+            }
+        });
+
+        // Diagram steps fade-up
+        gsap.from(".diagram-step", {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".system-diagram",
+                start: "top 80%",
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        // Process cards slide-up
+        gsap.from(".p-card", {
+            y: 40,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: ".process-cards",
+                start: "top 75%",
+                toggleActions: "play none none reverse"
+            }
+        });
+
+        // Page Hero Text entrance
+        gsap.from(".page-hero h1, .page-hero p", {
+            y: 30,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power3.out"
+        });
+    </script>
+</body>
+</html>
